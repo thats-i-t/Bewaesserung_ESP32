@@ -130,20 +130,45 @@ const char* serverIndex =
 //   ArduinoOTA.begin();
 // }
 
+int pump1_state = 0;
+
 void init_OTA()
 {
     server_ota.on("/", HTTP_GET, []() {
       server_ota.sendHeader("Connection", "close");
-      server_ota.send(200, "text/html", loginIndex);
-    });
-    server_ota.on("/serverIndex", HTTP_GET, []() {
-      server_ota.sendHeader("Connection", "close");
       server_ota.send(200, "text/html", serverIndex);
+    //   server_ota.send(200, "text/html", loginIndex);
     });
+    // server_ota.on("/serverIndex", HTTP_GET, []() {
+    //   server_ota.sendHeader("Connection", "close");
+    //   server_ota.send(200, "text/html", serverIndex);
+    // });
     server_ota.on("/test", HTTP_GET, []() {
       server_ota.sendHeader("Connection", "close");
       server_ota.send(200, "text/html", index_html);
     });
+    server_ota.on("/test_post", HTTP_POST, []() {
+      server_ota.sendHeader("Connection", "close");
+      server_ota.sendHeader("Access-Control-Allow-Origin", "*");
+      if(pump1_state == 0){
+        pump1_state = 1;
+        PUMP1_ON;
+        server_ota.send(200, "text/plain", "1");//server_ota.arg(0)
+      }
+      else{
+        pump1_state = 0;
+        PUMP1_OFF;
+        server_ota.send(200, "text/plain", "0");//server_ota.arg(0)
+      }
+    });
+    // server_ota.on("/pump", HTTP_GET, []() {
+    //   server_ota.sendHeader("Connection", "close");
+    //   server_ota.send(200, "text/html", index_html); // http://esp32-wohnzimmer/sensor?nr=1
+    //     int reqValid = 0;
+    //     int NParams = request->params();
+    //       * p = request->getParam(0);
+    //     int sensorNr = p->value().toInt();
+    // });
     /*handling uploading firmware file */
      server_ota.on("/update", HTTP_POST, []() {
         server_ota.sendHeader("Connection", "close");

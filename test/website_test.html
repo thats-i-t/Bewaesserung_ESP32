@@ -60,7 +60,7 @@
 	<center>
 		<h1>Steuerung Gewächshaus</h1>
 
-		<b>Bewässerungsanlage</b>
+		<!-- <b>Bewässerungsanlage</b>
 		<br><br>
 		<input type="checkbox" id="switch" class="checkbox" onclick="myFunction(1)"  />	
 		<label for="switch" class="toggle">
@@ -91,30 +91,42 @@
                         OFF  ON
                     </p>
                 </label>
+        </form> -->
+		
+		<b>Pumpe</b>
+        <form id="form_switch3" method="post">        
+            <input type="submit" id="switch3" class="checkbox" />
+                <label for="switch3" class="toggle">
+                    <p>
+                        OFF  ON
+                    </p>
+                </label>
         </form>
     </center>
 </body>
 <script>
     function myFunction(switchNumber) {
      // alert("Switch " + switchNumber + " is on!");
-    }
+    } 
 
-    const form = document.getElementById('form_switch3');    
+	var form_switch3 = document.getElementById('form_switch3');
+    form_switch3.addEventListener('submit', handleSubmit);
     function handleSubmit(event)
     {
         event.preventDefault();
-        const form = event.currentTarget;
-        var formData = new FormData(form);
-        // form.action = "http://192.168.178.67/test_post";
-        // fetch("http://192.168.178.67/test_post", {method: 'post', body: formData}).then(function(response) { // mode: 'no-cors', 
-        fetch("http://192.168.178.67/test_post", {method: 'post'}).then(function(response) { // mode: 'no-cors', 
-            // fetch("http://192.168.178.67/test_post", {method: 'post', mode: 'no-cors'}).then(function(response) {
-        //     return (response.text());
-        // }).then(function(responseText) {
-        //     console.log(responseText);
-        });
+        //var formData = new FormData(event.currentTarget);		
+		fetch('http://192.168.178.67/test_post', { method: 'post', mode: 'cors' })
+		.then((response) => response.text())
+		.then((valueStr) => {
+		 console.log("Received value: " + valueStr);
+		/*var checked = false;
+		 if(parseInt(valueStr) > 0)
+			checked = true;
+		var cb = document.getElementById('switch3');
+		if (checked == cb.checked)
+			cb.click();
+		*/});
     }
-    form.addEventListener('submit', handleSubmit);
 </script>
 
 </html>
