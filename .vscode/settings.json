@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "index.c": "cpp",
+        "espasyncwebserver.h": "c",
+        "dht.h": "c",
+        "webserver.c": "cpp"
+    }
+}
