@@ -140,6 +140,10 @@ void init_OTA()
       server_ota.sendHeader("Connection", "close");
       server_ota.send(200, "text/html", serverIndex);
     });
+    server_ota.on("/test", HTTP_GET, []() {
+      server_ota.sendHeader("Connection", "close");
+      server_ota.send(200, "text/html", index_html);
+    });
     /*handling uploading firmware file */
      server_ota.on("/update", HTTP_POST, []() {
         server_ota.sendHeader("Connection", "close");
