@@ -3,7 +3,7 @@ char index_html[] = "\
 <html> \
 <body> \
  \
-<h1>My First Heading</h1> \
+<h1>jennys Heading</h1> \
  \
 <p>My first paragraph.</p> \
  \
