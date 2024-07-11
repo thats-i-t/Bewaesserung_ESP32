@@ -130,8 +130,6 @@ const char* serverIndex =
 //   ArduinoOTA.begin();
 // }
 
-int pump1_state = 0;
-
 void init_OTA()
 {
     server_ota.on("/", HTTP_GET, []() {
@@ -139,36 +137,53 @@ void init_OTA()
       server_ota.send(200, "text/html", serverIndex);
     //   server_ota.send(200, "text/html", loginIndex);
     });
-    // server_ota.on("/serverIndex", HTTP_GET, []() {
-    //   server_ota.sendHeader("Connection", "close");
-    //   server_ota.send(200, "text/html", serverIndex);
-    // });
+
     server_ota.on("/test", HTTP_GET, []() {
       server_ota.sendHeader("Connection", "close");
       server_ota.send(200, "text/html", index_html);
     });
-    server_ota.on("/test_post", HTTP_POST, []() {
+
+    server_ota.on("/log", HTTP_GET, []() {
       server_ota.sendHeader("Connection", "close");
-      server_ota.sendHeader("Access-Control-Allow-Origin", "*");
-      if(pump1_state == 0){
-        pump1_state = 1;
-        PUMP1_ON;
-        server_ota.send(200, "text/plain", "1");//server_ota.arg(0)
+      String tmpstr = "";
+      for(int i=0; i <= logIdx; i++){
+        tmpstr.concat(logStr[i]);
       }
-      else{
-        pump1_state = 0;
-        PUMP1_OFF;
-        server_ota.send(200, "text/plain", "0");//server_ota.arg(0)
-      }
+      server_ota.send(200, "text/plain", tmpstr);
     });
-    // server_ota.on("/pump", HTTP_GET, []() {
-    //   server_ota.sendHeader("Connection", "close");
-    //   server_ota.send(200, "text/html", index_html); // http://esp32-wohnzimmer/sensor?nr=1
-    //     int reqValid = 0;
-    //     int NParams = request->params();
-    //       * p = request->getParam(0);
-    //     int sensorNr = p->value().toInt();
-    // });
+    
+    server_ota.on("/test_post", HTTP_POST, []() {
+
+        server_ota.sendHeader("Connection", "close");
+        server_ota.sendHeader("Access-Control-Allow-Origin", "*");
+        if(server_ota.args() > 0)
+        {
+            String name = server_ota.argName(0);
+            int value = server_ota.arg(0).toInt();
+
+            int newState = 0;
+            if(0 == name.compareTo("pump1"))
+                newState = set_pump1(value);
+            
+            server_ota.send(200, "text/plain", String(newState));
+        }
+    });
+    
+    server_ota.on("/get_sensor", HTTP_POST, []() {
+
+        server_ota.sendHeader("Connection", "close");
+        server_ota.sendHeader("Access-Control-Allow-Origin", "*");
+        if(server_ota.args() > 0)
+        {
+            String name = server_ota.argName(0);
+            int value = 0;
+            if(0 == name.compareTo("moist1"))
+                value = read_moist_sensor1();
+            
+            server_ota.send(200, "text/plain", String(value, 10));
+        }
+    });
+    
     /*handling uploading firmware file */
      server_ota.on("/update", HTTP_POST, []() {
         server_ota.sendHeader("Connection", "close");

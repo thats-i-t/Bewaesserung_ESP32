@@ -1,5 +1,7 @@
+#include "inc/log.c" // should be included before other includes
+#include "inc/ctrl_hardware.c" // should be included before other includes
+
 #include "inc/index.c"
-#include "inc/ctrl_hardware.c"
 #include "inc/read_dht.c"
 #include "inc/wifi.c"
 // #include "inc/webserver.c"
