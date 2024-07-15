@@ -23,3 +23,7 @@ void writeLog(String str){
     if(logIdx < lastIdxOfLog)
         logIdx++;
 }
+
+void writeLog(int val){
+    writeLog(String(val, 10));
+}

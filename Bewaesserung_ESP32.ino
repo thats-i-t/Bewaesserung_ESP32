@@ -6,6 +6,7 @@
 #include "inc/wifi.c"
 // #include "inc/webserver.c"
 #include "inc/ota_update.c"
+#include "inc/tell_ip.c"
 
 
 void setup() {
@@ -15,6 +16,8 @@ void setup() {
   // init_webserver();
   init_OTA();
   init_hardware();
+
+  tell_ip();
 }
 
 void loop()
