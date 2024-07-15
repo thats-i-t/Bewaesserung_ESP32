@@ -152,7 +152,7 @@ void init_OTA()
       server_ota.send(200, "text/plain", tmpstr);
     });
     
-    server_ota.on("/test_post", HTTP_POST, []() {
+    server_ota.on("/set-value", HTTP_POST, []() {
 
         server_ota.sendHeader("Connection", "close");
         server_ota.sendHeader("Access-Control-Allow-Origin", "*");
@@ -170,12 +170,23 @@ void init_OTA()
                 newState = set_pump3(value);
             if(0 == name.compareTo("vent"))
                 newState = set_vent(value);
+            if(0 == name.compareTo("mode"))
+            {
+                operation_mode = value;                
+                newState = value;
+                if(operation_mode == MODE_MANUAL)
+                {
+                    pump_off(1);
+                    pump_off(2);
+                    pump_off(3);
+                }
+            }
             
             server_ota.send(200, "text/plain", String(newState));
         }
     });
     
-    server_ota.on("/get_sensor", HTTP_POST, []() {
+    server_ota.on("/get-value", HTTP_POST, []() {
 
         server_ota.sendHeader("Connection", "close");
         server_ota.sendHeader("Access-Control-Allow-Origin", "*");
@@ -183,6 +194,14 @@ void init_OTA()
         {
             String name = server_ota.argName(0);
             int value = 0;
+            if(0 == name.compareTo("pump1"))
+                value = get_pump_state(1);
+            if(0 == name.compareTo("pump2"))
+                value = get_pump_state(2);
+            if(0 == name.compareTo("pump3"))
+                value = get_pump_state(3);
+            if(0 == name.compareTo("vent"))
+                value = get_vent_state();
             if(0 == name.compareTo("moist1"))
                 value = read_moist_sensor1();
             if(0 == name.compareTo("moist2"))

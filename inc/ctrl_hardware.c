@@ -21,6 +21,9 @@
 #define VENT_OFF digitalWrite(PIN_VENT, LOW);writeLog("VENT switched off")
 
 
+float moist_sens_filt[3] = { 0, 0, 0 };
+
+
 void init_hardware()
 {
   pinMode(PIN_PUMP1, OUTPUT);
@@ -34,6 +37,29 @@ void init_hardware()
 
   pinMode(PIN_VENT, OUTPUT);
   VENT_OFF;
+}
+
+int get_vent_state()
+{
+  return digitalRead(PIN_VENT);
+}
+
+int get_pump_state(int nr)
+{
+  int value = 0;
+  switch(nr)
+  {
+    case 1:
+      value = digitalRead(PIN_PUMP1);
+      break;
+    case 2:
+      value = digitalRead(PIN_PUMP2);
+      break;
+    case 3:
+      value = digitalRead(PIN_PUMP3);
+      break;
+  }
+  return value;
 }
 
 int set_pump1(int newState)
@@ -80,9 +106,27 @@ int set_vent(int newState)
   return newState;
 }
 
+void meas_and_filter_moist_sensor()
+{
+  int i;
+  float cFilt = 0.95; // large value means more filtering
+  int u_new, y_old, y_new;
+  for(i = 0; i < 3; i++)
+  {
+    if(i == 0)
+      u_new = analogRead(PIN_MOIST_SENSOR1);
+    else if(i == 1)      
+      u_new = analogRead(PIN_MOIST_SENSOR2);
+    else   
+      u_new = analogRead(PIN_MOIST_SENSOR3);
+
+    moist_sens_filt[i] = (1-cFilt) * u_new + cFilt * moist_sens_filt[i];
+  }
+}
+
 int read_moist_sensor1()
 {  
-  int value = analogRead(PIN_MOIST_SENSOR1);
+  int value = (int)moist_sens_filt[0];
   String str = "Read moist_sensor1 = ";
   str.concat(value);
   writeLog(str);  
@@ -91,7 +135,7 @@ int read_moist_sensor1()
 
 int read_moist_sensor2()
 {  
-  int value = analogRead(PIN_MOIST_SENSOR2);
+  int value = (int)moist_sens_filt[1];
   String str = "Read moist_sensor2 = ";
   str.concat(value);
   writeLog(str);  
@@ -100,7 +144,7 @@ int read_moist_sensor2()
 
 int read_moist_sensor3()
 {  
-  int value = analogRead(PIN_MOIST_SENSOR3);
+  int value = (int)moist_sens_filt[2];
   String str = "Read moist_sensor3 = ";
   str.concat(value);
   writeLog(str);  
