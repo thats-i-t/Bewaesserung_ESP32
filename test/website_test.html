@@ -9,7 +9,7 @@
 </head>
 <body>
 	<center>
-		<h1>Steuerung Gewächshaus</h1>
+		<h1>Steuerung<br>Gewaechshaus</h1>
 
 		<p></p>
 		<label class="container">
@@ -18,28 +18,24 @@
 			<span class="checkmark"></span>
 		</label><br><br>
 
-		<p></p>
 		<label class="container">
 			<b>Pumpe 1</b>
 			<input type="checkbox" id="pump1" onclick="set_value(this.id)" /><br><br>
 			<span class="checkmark"></span>
 		</label><br><br>
-		
-		<p></p>
+
 		<label class="container">
 			<b>Pumpe 2</b>
 			<input type="checkbox" id="pump2"  onclick="set_value(this.id)" /><br><br>
 			<span class="checkmark"></span>
 		</label><br><br>
 
-		<p></p>
 		<label class="container">
 			<b>Pumpe 3</b>
 			<input type="checkbox" id="pump3"  onclick="set_value(this.id)" /><br><br>
 			<span class="checkmark"></span>
 		</label><br><br>
 
-		<p></p>
 		<label class="container">
 			<b>Ventilator</b>
 			<input type="checkbox" id="vent"  onclick="set_value(this.id)" /><br><br>
@@ -50,16 +46,17 @@
 		<p></p>
 		<p></p>
 		<p></p>
-		<h2>Sensordaten</h2><br>
-		<input type="button" id="Eingabe" value= 'Aktualisieren' onclick="read_all_sensors();displayCurrentTime()"/><br><br>
+		<h2>Sensordaten</h2>
+		Periodic refresh?<input type="checkbox" id="auto_refresh" checked=true/><br><br>
+		<input type="button" id="Eingabe" value= 'Refresh manually' onclick="read_all_sensors();displayCurrentTime()"/><br>
     	<p id="timeDisplay"></p>
 
 		<p></p>
-		<b>Feuchtigkeitssensor 1</b><br><span id="moist1"></span><br><br>
+		<b>Feuchtigkeitssensor 1</b><br><span id="moist1"></span><br>
 
-		<b>Feuchtigkeitssensor 2</b><br><span id="moist2"></span><br><br>
+		<b>Feuchtigkeitssensor 2</b><br><span id="moist2"></span><br>
 
-		<b>Feuchtigkeitssensor 3</b><br><span id="moist3"></span><br><br>
+		<b>Feuchtigkeitssensor 3</b><br><span id="moist3"></span><br>
     </center>
 </body>
 <style>
@@ -76,7 +73,7 @@
 	margin-left: auto;
 	margin-right: auto;
 	cursor: pointer;
-	font-size: 22px;
+	font-size: 17px;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	-ms-user-select: none;
@@ -95,11 +92,10 @@
 	/* Create a custom radio button */
 	.checkmark {
 	position: absolute;
-	top: 0;
+	top: -4px;
 	left: -2px;
 	height: 25px;
 	width: 25px;
-
 	background-color: #ed0b0b;
 	border-radius: 50%;
 	}
@@ -140,9 +136,21 @@
 
 <script>
 	const ipStr = 'http://192.168.178.67/';
+	let lastTime = null;
+
+	function refresh_data()
+	{
+		read_all_sensors();
+		read_all_actuator_states();
+		displayCurrentTime();
+	}
+	refresh_data();
 
 	var intervalId = setInterval(function() {
-		//read_all_sensors();
+		if(document.getElementById("auto_refresh").checked == true)
+		{
+			refresh_data();
+		}
 	  }, 1000);
 
 	async function setParam(api, name, val)
@@ -176,7 +184,13 @@
 		read_value("moist3").then((valueStr) => { document.getElementById("moist3").innerHTML = valueStr; });
     }
 
-	let lastTime = null;
+    function read_all_actuator_states()
+    {
+		read_value("pump1").then((valueStr) => { document.getElementById("pump1").checked = valueStr > 0; });
+		//read_value("pump2");
+		//read_value("pump3");
+		//read_value("vent");
+    }
 
 	function displayCurrentTime() {
 		const currentTime = new Date().toLocaleTimeString();

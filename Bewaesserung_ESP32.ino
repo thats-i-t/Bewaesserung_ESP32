@@ -1,6 +1,6 @@
 #define MODE_MANUAL 0
 #define MODE_AUTOMATIC 1
-int operation_mode = 1;
+int operation_mode = MODE_MANUAL;
 
 #include "inc/log.c" // should be included BEFORE other includes
 #include "inc/ctrl_hardware.c" // should be included BEFORE other includes
