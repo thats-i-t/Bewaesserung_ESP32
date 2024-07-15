@@ -8,6 +8,7 @@
 #include "inc/ota_update.c"
 #include "inc/tell_ip.c"
 #include "inc/automatization.c"
+#include "inc/timer.c"
 
 
 void setup() {
@@ -17,6 +18,7 @@ void setup() {
   // init_webserver();
   init_OTA();
   init_hardware();
+  init_timer();
 
   tell_ip();
 }
@@ -33,4 +35,6 @@ void loop()
 
   // auto_mode();
 
+  timer.tick();
 }
+

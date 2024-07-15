@@ -1,7 +1,7 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
 
-String serverName = "https://dieterle.ws/tell_ip";
+String serverName = "https://dieterle.ws/tell-ip";
 
 void tell_ip()
 {
@@ -9,7 +9,7 @@ void tell_ip()
     {
         HTTPClient http;
 
-        String serverPath = serverName + "?ip=123.456.789.000";
+        String serverPath = serverName + "?ip=1.2.3.4";
         
         // Your Domain name with URL path or IP address with path
         http.begin(serverPath.c_str());
