@@ -27,4 +27,6 @@ void loop()
   // ArduinoOTA.handle();
   server_ota.handleClient();
 
+  auto_mode();
+
 }
