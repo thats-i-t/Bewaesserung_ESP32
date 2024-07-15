@@ -1,18 +1,128 @@
 
 <!DOCTYPE html>
 <html>
+	
 <head>
 	<title>Steuerung Gewächshaus</title>
+	
+	
 </head>
 <body>
 	<center>
 		<h1>Steuerung Gewächshaus</h1>
-		<b>Pumpe 1</b><input type="checkbox" id="pump1"  onclick="set_value(this.id)" /><br><br>
-		<b>Pumpe 2</b><input type="checkbox" id="pump2"  onclick="set_value(this.id)" /><br><br>
-		<b>Sensoren auslesen</b><input type="button" id="read_sensors" onclick="read_all_sensors()"/><br><br>
+
+		<p></p>
+		<label class="container">
+			<b>Pumpe 1</b>
+			<input type="checkbox" id="pump1" onclick="set_value(this.id)" /><br><br>
+			<span class="checkmark"></span>
+		</label><br><br>
+		
+		<p></p>
+		<label class="container">
+			<b>Pumpe 2</b>
+			<input type="checkbox" id="pump2"  onclick="set_value(this.id)" /><br><br>
+			<span class="checkmark"></span>
+		</label><br><br>
+
+		<p></p>
+		<label class="container">
+			<b>Pumpe 3</b>
+			<input type="checkbox" id="pump3"  onclick="set_value(this.id)" /><br><br>
+			<span class="checkmark"></span>
+		</label><br><br>
+
+
+		<p></p>
+		<p></p>
+		<p></p>
+		<input type="button" id="Eingabe" value= 'Aktualisieren' onclick="read_all_sensors();displayCurrentTime()"/><b>Sensordaten</b><br><br>
+    	<p id="timeDisplay"></p>
+
+		<p></p>
 		<b>Feuchtigkeitssensor 1</b><br><span id="moist1"></span><br><br>
+
+		<b>Feuchtigkeitssensor 2</b><br><span id="moist2"></span><br><br>
+
+		<b>Feuchtigkeitssensor 3</b><br><span id="moist3"></span><br><br>
     </center>
 </body>
+<style>
+	h1 {
+		color: green;
+	}
+		
+	/* Customize the label (the container) */
+	.container {
+	position: absolute;
+	left: 38%;
+	padding-left: 35px;
+	margin-bottom: 12px;
+	margin-left: auto;
+	margin-right: auto;
+	cursor: pointer;
+	font-size: 22px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	}
+
+	/* Hide the browser's default radio button */
+	.container input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+	}
+
+	/* Create a custom radio button */
+	.checkmark {
+	position: absolute;
+	top: 0;
+	left: -2px;
+	height: 25px;
+	width: 25px;
+
+	background-color: #ed0b0b;
+	border-radius: 50%;
+	}
+
+	/* On mouse-over, add a grey background color */
+	.container:hover input ~ .checkmark {
+	background-color: #f0d7cf;
+	}
+
+
+	/* When the radio button is checked, add a blue background */
+	.container input:checked ~ .checkmark {
+	background-color: #09ec59;
+	}
+
+	/* Create the indicator (the dot/circle - hidden when not checked) */
+	.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+	}
+
+	/* Show the indicator (dot/circle) when checked */
+	.container input:checked ~ .checkmark:after {
+	display: block;
+	}
+
+	/* Style the indicator (dot/circle) */
+	.container .checkmark:after {
+	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+	}
+</style>
+
 <script>
 	const ipStr = 'http://192.168.178.67/';
 
@@ -21,7 +131,7 @@
 		var req = ipStr + api + '?' + name + '=' + val;
 		console.log("url: " + req);
 		console.log("Sending: " + name + "=" + val);
-		const response = await fetch(req, { method: 'post', mode: 'cors' })
+		const response = await fetch(req, { method: 'post', mode: 'cors' });
 		var valRcv = await response.text();
 		console.log("Received: " + name + "=" + valRcv);
 		return valRcv;
@@ -43,7 +153,25 @@
     function read_all_sensors()
     {
 		read_value("moist1").then((valueStr) => { document.getElementById("moist1").innerHTML = valueStr; });
+		read_value("moist2").then((valueStr) => { document.getElementById("moist2").innerHTML = valueStr; });
+		read_value("moist3").then((valueStr) => { document.getElementById("moist3").innerHTML = valueStr; });
     }
+
+	let lastTime = null;
+
+	function displayCurrentTime() {
+		const currentTime = new Date().toLocaleTimeString();
+		const timeDisplay = document.getElementById("timeDisplay");
+
+		if (lastTime === null) {
+			timeDisplay.textContent = `Update: ${currentTime}`;
+			lastTime = currentTime;
+		} else {
+			timeDisplay.textContent = `Update: ${currentTime}`;
+			lastTime = currentTime;
+		}
+	}
+
 </script>
 
 </html>
