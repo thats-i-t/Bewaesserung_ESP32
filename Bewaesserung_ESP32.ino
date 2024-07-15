@@ -7,6 +7,7 @@
 // #include "inc/webserver.c"
 #include "inc/ota_update.c"
 #include "inc/tell_ip.c"
+#include "inc/automatization.c"
 
 
 void setup() {
@@ -30,6 +31,6 @@ void loop()
   // ArduinoOTA.handle();
   server_ota.handleClient();
 
-  auto_mode();
+  // auto_mode();
 
 }

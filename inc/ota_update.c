@@ -164,6 +164,12 @@ void init_OTA()
             int newState = 0;
             if(0 == name.compareTo("pump1"))
                 newState = set_pump1(value);
+            if(0 == name.compareTo("pump2"))
+                newState = set_pump2(value);
+            if(0 == name.compareTo("pump3"))
+                newState = set_pump3(value);
+            if(0 == name.compareTo("vent"))
+                newState = set_vent(value);
             
             server_ota.send(200, "text/plain", String(newState));
         }
@@ -179,6 +185,10 @@ void init_OTA()
             int value = 0;
             if(0 == name.compareTo("moist1"))
                 value = read_moist_sensor1();
+            if(0 == name.compareTo("moist2"))
+                value = read_moist_sensor2();
+            if(0 == name.compareTo("moist3"))
+                value = read_moist_sensor3();
             
             server_ota.send(200, "text/plain", String(value, 10));
         }
