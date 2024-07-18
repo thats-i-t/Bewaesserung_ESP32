@@ -193,9 +193,10 @@
     function read_all_actuator_states()
     {
 		read_value("pump1").then((valueStr) => { document.getElementById("pump1").checked = valueStr > 0; });
-		//read_value("pump2");
-		//read_value("pump3");
-		//read_value("vent");
+		read_value("pump2").then((valueStr) => { document.getElementById("pump2").checked = valueStr > 0; });
+		read_value("pump3").then((valueStr) => { document.getElementById("pump3").checked = valueStr > 0; });
+		read_value("vent").then((valueStr) => { document.getElementById("vent").checked = valueStr > 0; });
+		read_value("light").then((valueStr) => { document.getElementById("light").checked = valueStr > 0; });
     }
 
 	function displayCurrentTime() {
