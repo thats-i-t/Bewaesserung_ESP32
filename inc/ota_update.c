@@ -170,6 +170,8 @@ void init_OTA()
                 newState = set_pump3(value);
             if(0 == name.compareTo("vent"))
                 newState = set_vent(value);
+            if(0 == name.compareTo("light"))
+                newState = set_light(value);
             if(0 == name.compareTo("mode"))
             {
                 operation_mode = value;                
@@ -202,6 +204,8 @@ void init_OTA()
                 value = get_pump_state(3);
             if(0 == name.compareTo("vent"))
                 value = get_vent_state();
+            if(0 == name.compareTo("light"))
+                value = get_light_state();
             if(0 == name.compareTo("moist1"))
                 value = read_moist_sensor1();
             if(0 == name.compareTo("moist2"))

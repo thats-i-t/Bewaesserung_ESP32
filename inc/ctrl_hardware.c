@@ -1,11 +1,12 @@
 
 #define PIN_PUMP1 25
 #define PIN_PUMP2 26
-#define PIN_PUMP3 14 //27
-#define PIN_VENT 27 //14
+#define PIN_PUMP3 14
+#define PIN_VENT 27
+#define PIN_LIGHT 19
 
-#define PIN_MOIST_SENSOR1 33 //32
-#define PIN_MOIST_SENSOR2 32 //33 
+#define PIN_MOIST_SENSOR1 33
+#define PIN_MOIST_SENSOR2 32
 #define PIN_MOIST_SENSOR3 35
 
 #define PUMP1_ON  digitalWrite(PIN_PUMP1, HIGH);writeLog("PUMP 1 switched on")
@@ -19,6 +20,9 @@
 
 #define VENT_ON  digitalWrite(PIN_VENT, HIGH);writeLog("VENT switched on")
 #define VENT_OFF digitalWrite(PIN_VENT, LOW);writeLog("VENT switched off")
+
+#define LIGHT_ON  digitalWrite(PIN_LIGHT, HIGH);writeLog("LIGHT switched on")
+#define LIGHT_OFF digitalWrite(PIN_LIGHT, LOW);writeLog("LIGHT switched off")
 
 
 float moist_sens_filt[3] = { 0, 0, 0 };
@@ -37,11 +41,19 @@ void init_hardware()
 
   pinMode(PIN_VENT, OUTPUT);
   VENT_OFF;
+
+  pinMode(PIN_LIGHT, OUTPUT);
+  LIGHT_OFF;
 }
 
 int get_vent_state()
 {
   return digitalRead(PIN_VENT);
+}
+
+int get_light_state()
+{
+  return digitalRead(PIN_LIGHT);
 }
 
 int get_pump_state(int nr)
@@ -102,6 +114,17 @@ int set_vent(int newState)
   }
   else{
       VENT_OFF;
+  }
+  return newState;
+}
+
+int set_light(int newState)
+{
+  if(newState == 1){
+      LIGHT_ON;
+  }
+  else{
+      LIGHT_OFF;
   }
   return newState;
 }
