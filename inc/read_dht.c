@@ -1,20 +1,13 @@
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
 
-#define RX1 34
-#define TX1 35
 #define DHT_TYPE DHT11 // DHT11 or DHT22 (=AM2302) or DHT21 (=AM2301)
 
-const int DHT_PINS[] = {27, 26, 25, 14, 33, 32};
-const int NDht = 6; //sizeof(DHT_PINS) / sizeof(int);
+const int DHT_PINS[] = {18};
+const int NDht = 1; //sizeof(DHT_PINS) / sizeof(int);
 
 DHT dhtSensors[] = {
-  DHT(DHT_PINS[0], DHT_TYPE),
-  DHT(DHT_PINS[1], DHT_TYPE),
-  DHT(DHT_PINS[2], DHT_TYPE),
-  DHT(DHT_PINS[3], DHT_TYPE),
-  DHT(DHT_PINS[4], DHT_TYPE),
-  DHT(DHT_PINS[5], DHT_TYPE)
+  DHT(DHT_PINS[0], DHT_TYPE)
 };
 
 float temperature[NDht];
@@ -26,7 +19,9 @@ void init_dht()
 { 
   for (int i; i < NDht; i++)
   {
+    Serial.println("Init DHT sensor now...");
     dhtSensors[i].begin();
+    Serial.println("done.");
   }
 }
 
@@ -36,6 +31,16 @@ int read_DHT(DHT *dht, float *temp, float *humid) {
   int valid = isnan(*temp) ? 0 : 1;
   valid = isnan(*humid) ? 0 : valid;
   return valid;
+}
+
+float read_DHT_temp(int nr)
+{
+  return temperature[nr];
+}
+
+float read_DHT_humid(int nr)
+{
+  return humidity[nr];
 }
 
 void read_all_DHT()

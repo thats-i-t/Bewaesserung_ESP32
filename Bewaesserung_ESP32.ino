@@ -17,6 +17,7 @@ int operation_mode = MODE_MANUAL;
 
 void setup() {
   Serial.begin(115200);
+  
   init_dht();
   init_wifi();
   // init_webserver();

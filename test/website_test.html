@@ -63,6 +63,10 @@
 		<b>Feuchtigkeitssensor 2</b><br><span id="moist2"></span><br>
 
 		<b>Feuchtigkeitssensor 3</b><br><span id="moist3"></span><br>
+
+		<b>Lufttemperatur</b><br><span id="airtemp"></span><br>
+
+		<b>Luftfeuchte</b><br><span id="airhumid"></span><br>
     </center>
 </body>
 <style>
@@ -188,6 +192,8 @@
 		read_value("moist1").then((valueStr) => { document.getElementById("moist1").innerHTML = valueStr; });
 		read_value("moist2").then((valueStr) => { document.getElementById("moist2").innerHTML = valueStr; });
 		read_value("moist3").then((valueStr) => { document.getElementById("moist3").innerHTML = valueStr; });
+		read_value("airtemp").then((valueStr) => { document.getElementById("airtemp").innerHTML = valueStr; });
+		read_value("airhumid").then((valueStr) => { document.getElementById("airhumid").innerHTML = valueStr; });
     }
 
     function read_all_actuator_states()

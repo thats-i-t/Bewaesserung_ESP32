@@ -212,6 +212,10 @@ void init_OTA()
                 value = read_moist_sensor2();
             if(0 == name.compareTo("moist3"))
                 value = read_moist_sensor3();
+            if(0 == name.compareTo("airtemp"))
+                value = read_DHT_temp(0);
+            if(0 == name.compareTo("airhumid"))
+                value = read_DHT_humid(0);
             
             server_ota.send(200, "text/plain", String(value, 10));
         }
