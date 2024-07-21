@@ -27,9 +27,10 @@ bool timerTask4(void *)
 {
   read_all_DHT();
   // getSensorDataString();
-  if(Serial1) {
-    Serial.println(getAllDataString());
-  }
+  // if(Serial1) {
+    // Serial.println(getAllDataString());
+  // }
+  return true;
 }
 
 void init_timer()
