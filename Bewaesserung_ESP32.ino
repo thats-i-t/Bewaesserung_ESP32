@@ -13,6 +13,8 @@ int operation_mode = MODE_MANUAL;
 #include "inc/tell_ip.c"
 #include "inc/automatization.c"
 #include "inc/timer.c" // should be included AFTER other includes
+#include "inc/automatization_light.c"
+
 
 
 void setup() {
@@ -26,6 +28,7 @@ void setup() {
   init_timer();
 
   tell_ip();
+  // auto_mode_light();
 }
 
 void loop()
