@@ -24,10 +24,10 @@ void auto_mode_light(){
     char timeHour[3];
     strftime(timeHour,3, "%H", &timeinfo);
     int tmp = atoi(timeHour);
-    if (tmp == 22 && temp_old == 21){
+    if (tmp == 20 && temp_old == 19){
         LIGHT_OFF;
     }
-    if (tmp == 4 && temp_old == 3){
+    if (tmp == 8 && temp_old == 7){
         LIGHT_ON;
     }
     temp_old = tmp;
