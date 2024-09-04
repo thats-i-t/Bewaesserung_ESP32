@@ -1,10 +1,10 @@
 #include "time.h"
 
 const char* ntpServer = "pool.ntp.org";
-const long  gmtOffset_sec = 0;
+const long  gmtOffset_sec = 3600;
 const int   daylightOffset_sec = 3600;
 
-void auto_mode_light(){
+void init_auto_mode_light(){
     // Init and get the time
     configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
     
@@ -12,5 +12,23 @@ void auto_mode_light(){
     getLocalTime(&timeinfo);
     char timeHour[3];
     strftime(timeHour,3, "%H", &timeinfo);
-    writeLog(timeHour);
+    String tmp=String(timeHour);
+    writeLog(tmp);
+}
+
+static int temp_old = 0;
+
+void auto_mode_light(){
+    struct tm timeinfo;
+    getLocalTime(&timeinfo);
+    char timeHour[3];
+    strftime(timeHour,3, "%H", &timeinfo);
+    int tmp = atoi(timeHour);
+    if (tmp == 22 && temp_old == 21){
+        LIGHT_OFF;
+    }
+    if (tmp == 4 && temp_old == 3){
+        LIGHT_ON;
+    }
+    temp_old = tmp;
 }

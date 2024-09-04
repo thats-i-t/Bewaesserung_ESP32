@@ -198,6 +198,7 @@
 
     function read_all_actuator_states()
     {
+		read_value("mode").then((valueStr) => { document.getElementById("mode").checked = valueStr > 0; });
 		read_value("pump1").then((valueStr) => { document.getElementById("pump1").checked = valueStr > 0; });
 		read_value("pump2").then((valueStr) => { document.getElementById("pump2").checked = valueStr > 0; });
 		read_value("pump3").then((valueStr) => { document.getElementById("pump3").checked = valueStr > 0; });

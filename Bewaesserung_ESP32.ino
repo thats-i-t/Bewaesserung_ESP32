@@ -1,6 +1,6 @@
 #define MODE_MANUAL 0
 #define MODE_AUTOMATIC 1
-int operation_mode = MODE_MANUAL;
+int operation_mode = MODE_AUTOMATIC;
 
 #include "inc/log.c" // should be included BEFORE other includes
 #include "inc/ctrl_hardware.c" // should be included BEFORE other includes
@@ -12,8 +12,9 @@ int operation_mode = MODE_MANUAL;
 #include "inc/ota_update.c"
 #include "inc/tell_ip.c"
 #include "inc/automatization.c"
-#include "inc/timer.c" // should be included AFTER other includes
 #include "inc/automatization_light.c"
+
+#include "inc/timer.c" // should be included AFTER other includes
 
 
 
@@ -28,7 +29,7 @@ void setup() {
   init_timer();
 
   tell_ip();
-  // auto_mode_light();
+  init_auto_mode_light();
 }
 
 void loop()

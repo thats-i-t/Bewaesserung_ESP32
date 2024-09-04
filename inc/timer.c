@@ -12,7 +12,8 @@ bool timerTask2(void *)
 {
   if(operation_mode == MODE_AUTOMATIC)
   {
-    auto_mode();
+    // auto_mode();
+    auto_mode_light();
   }
   return true; // to keep timer active
 }

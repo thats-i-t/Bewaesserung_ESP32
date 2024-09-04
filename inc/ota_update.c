@@ -196,6 +196,8 @@ void init_OTA()
         {
             String name = server_ota.argName(0);
             int value = 0;
+            if(0 == name.compareTo("mode"))
+                value = operation_mode;
             if(0 == name.compareTo("pump1"))
                 value = get_pump_state(1);
             if(0 == name.compareTo("pump2"))
